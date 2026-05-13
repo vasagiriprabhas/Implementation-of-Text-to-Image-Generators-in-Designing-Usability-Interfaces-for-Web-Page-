@@ -1,0 +1,64 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+
+<!-- contact -->
+<div id="contact" class="contact">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+                {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+
+                <form action="{% url 'test_text_to_image' %}" method="POST">
+                    {% csrf_token %}
+
+                    <legend style="font-weight:bolder;color:tomato;text-align:center;">
+                        Enter a proper value to Generate the Image
+                    </legend>
+
+                    <textarea class="textarea form-control"
+                              name="description"
+                              placeholder="Description"
+                              required>{{ text }}</textarea>
+
+                    <!-- STYLE DROPDOWN -->
+                    <select name="style" class="form-control mt-2">
+                        <option value="realistic" {% if style == "realistic" %}selected{% endif %}>
+                            Realistic
+                        </option>
+                        <option value="iconic" {% if style == "iconic" %}selected{% endif %}>
+                            Iconic
+                        </option>
+                        <option value="algerian" {% if style == "algerian" %}selected{% endif %}>
+                            Algerian
+                        </option>
+                    </select>
+
+                    <button type="submit" class="btn btn-info mt-3 w-100">
+                        Generate Image
+                    </button>
+                </form>
+
+                <!-- OUTPUT SECTION -->
+                {% if path %}
+                <div class="mt-4 text-center">
+                    <h5 style="color:green;">Generated Image</h5>
+                    <img src="{{ path }}" class="img-fluid rounded shadow">
+                    <p class="mt-2"><b>Style:</b> {{ style }}</p>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
